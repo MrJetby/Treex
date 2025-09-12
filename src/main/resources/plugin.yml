@@ -1,0 +1,4 @@
+name: Treex
+version: '${project.version}'
+main: me.jetby.treex.Treex
+api-version: '1.16'

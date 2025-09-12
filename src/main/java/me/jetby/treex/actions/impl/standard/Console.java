@@ -1,0 +1,17 @@
+package me.jetby.treex.actions.impl.standard;
+
+import me.jetby.treex.actions.Action;
+import me.jetby.treex.actions.ActionContext;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+
+public class Console implements Action {
+
+    @Override
+    public void execute(@NotNull ActionContext context) {
+
+        String message = context.get("message", String.class);
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message);
+    }
+}
