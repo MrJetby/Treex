@@ -4,9 +4,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Treex extends JavaPlugin {
 
+    private static Treex INSTANCE;
+    public static Treex getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        INSTANCE = this;
 
     }
 

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public enum ActionType {
 
     MESSAGE(new Message()),
+    DELAY(new Delay()),
     MSG(new Message()),
     SOUND(new Sound()),
     EFFECT(new Effect()),
