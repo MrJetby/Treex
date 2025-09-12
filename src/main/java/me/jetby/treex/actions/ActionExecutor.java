@@ -2,71 +2,48 @@ package me.jetby.treex.actions;
 
 import lombok.experimental.UtilityClass;
 import me.jetby.treex.Treex;
-import org.bukkit.scheduler.BukkitRunnable;
+import me.jetby.treex.text.Colorize;
+import me.jetby.treex.text.Papi;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 @UtilityClass
 public class ActionExecutor {
 
-    public void execute(@NotNull ActionContext ctx, @NotNull Map<String, List<String>> actions) {
-        List<Entry<String, List<String>>> actionList = new ArrayList<>(actions.entrySet());
-        executeSequential(ctx, actionList, 0);
+    public void execute(@NotNull ActionContext ctx,
+                        @NotNull List<ActionRegistry.ActionEntry> actions) {
+        executeSequential(ctx, actions, 0);
     }
 
-    private void executeSequential(@NotNull ActionContext ctx, @NotNull List<Entry<String, List<String>>> actionList, long initialDelayTicks) {
-        if (actionList.isEmpty()) return;
+    private void executeSequential(@NotNull ActionContext ctx,
+                                   List<ActionRegistry.ActionEntry> actions,
+                                   int startIndex) {
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                processNextGroup(ctx, actionList, 0);
-            }
-        }.runTaskLater(Treex.getInstance(), initialDelayTicks);
-    }
+        for (int i = startIndex; i < actions.size(); i++) {
 
-    private void processNextGroup(@NotNull ActionContext ctx, @NotNull List<Entry<String, List<String>>> actionList, int currentIndex) {
-        if (currentIndex >= actionList.size()) return;
+            ActionRegistry.ActionEntry entry = actions.get(i);
+            ActionType type = entry.type();
+            String c = Papi.setPapi(ctx.getPlayer(), Colorize.text(entry.context()));
 
-        Entry<String, List<String>> currentEntry = actionList.get(currentIndex);
-        String actionName = currentEntry.getKey();
-        List<String> contexts = currentEntry.getValue();
+            ctx.put("message", c);
 
-        Action action;
-        ActionType type = ActionType.getType(actionName);
-        if (type != null) {
-            action = type.getAction();
-        } else {
-            action = ActionTypeRegistry.get(actionName);
-        }
+            if (type == ActionType.DELAY) {
+                try {
+                    int delayTicks = Integer.parseInt(c);
+                    int finalI = i;
+                    Bukkit.getScheduler().runTaskLater(Treex.getInstance(), () ->
+                            executeSequential(ctx, actions, finalI), delayTicks);
 
-        if (action == null) {
-            processNextGroup(ctx, actionList, currentIndex + 1);
-            return;
-        }
-
-        if ("DELAY".equalsIgnoreCase(actionName)) {
-            String delayStr = contexts.isEmpty() ? "0" : contexts.get(0);
-            try {
-                int delayTicks = Integer.parseInt(delayStr.trim());
-                if (delayTicks > 0) {
-                    executeSequential(ctx, actionList.subList(currentIndex + 1, actionList.size()), delayTicks);
                     return;
+                } catch (NumberFormatException e) {
+                    continue;
                 }
-            } catch (NumberFormatException e) {
-                //
+            } else {
+                type.getAction().execute(ctx);
             }
-        }
 
-        for (String message : contexts) {
-            ctx.put("message", message);
-            action.execute(ctx);
         }
-
-        processNextGroup(ctx, actionList, currentIndex + 1);
     }
 }
