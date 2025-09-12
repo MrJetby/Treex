@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import me.jetby.treex.text.Colorize;
 import me.jetby.treex.text.Papi;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -11,18 +12,24 @@ import java.util.Map;
 @UtilityClass
 public class ActionExecutor {
 
-    public void execute(Player player,
-                        Map<ActionType, List<String>> actions
-    ) {
-        actions.forEach((type, contexts) -> {
-            for (String raw : contexts) {
-                String parsed = Papi.setPapi(player, Colorize.text(raw));
+    public void execute(@NotNull ActionContext ctx,
+                        @NotNull Map<ActionType, List<String>> actions) {
 
-                ActionContext ctx = new ActionContext(player);
-                ctx.put("message", parsed);
+        for (var entry : actions.entrySet()) {
+            ActionType type = entry.getKey();
+            List<String> contexts = entry.getValue();
 
-                type.getAction().execute(ctx);
+            for (String message : contexts) {
+                ctx.put("message", message);
+
+                var action = type.getAction();
+                if (action != null) {
+                    action.execute(ctx);
+                } else {
+                    var custom = ActionTypeRegistry.get(type.name());
+                    if (custom != null) custom.execute(ctx);
+                }
             }
-        });
+        }
     }
 }
