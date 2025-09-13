@@ -35,10 +35,9 @@ public class ActionExecutor {
                     int finalI = i;
                     Bukkit.getScheduler().runTaskLater(Treex.getInstance(), () ->
                             executeSequential(ctx, actions, finalI), delayTicks);
-
                     return;
                 } catch (NumberFormatException e) {
-                    continue;
+                    return;
                 }
             } else {
                 type.getAction().execute(ctx);
