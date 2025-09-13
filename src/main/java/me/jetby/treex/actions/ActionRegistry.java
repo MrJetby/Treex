@@ -23,15 +23,24 @@ public class ActionRegistry {
             }
 
             var typeName = matcher.group(1).toUpperCase();
-            var type = ActionType.getType(typeName);
-            if (type == null) {
-                logger.warn("ActionType " + typeName + " is not available!");
-                continue;
+            ActionType type = ActionType.getType(typeName);
+            Action action = null;
+
+            if (type != null) {
+                action = type.getAction();
+            } else {
+                action = ActionTypeRegistry.get(typeName);
+                if (action == null) {
+                    logger.warn("ActionType " + typeName + " is not available!");
+                    continue;
+                }
             }
+
             var context = matcher.group(2).trim();
-            actions.add(new ActionEntry(type, context));
+            actions.add(new ActionEntry(action, context));
         }
         return actions;
     }
-    public record ActionEntry(ActionType type, String context) {}
+
+    public record ActionEntry(Action action, String context) {}
 }

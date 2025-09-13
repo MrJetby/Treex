@@ -2,6 +2,7 @@ package me.jetby.treex.actions;
 
 import lombok.experimental.UtilityClass;
 import me.jetby.treex.Treex;
+import me.jetby.treex.actions.impl.standard.Delay;
 import me.jetby.treex.text.Colorize;
 import me.jetby.treex.text.Papi;
 import org.bukkit.Bukkit;
@@ -24,25 +25,24 @@ public class ActionExecutor {
         for (int i = startIndex; i < actions.size(); i++) {
 
             ActionRegistry.ActionEntry entry = actions.get(i);
-            ActionType type = entry.type();
+            Action action = entry.action();
             String c = Papi.setPapi(ctx.getPlayer(), Colorize.text(entry.context()));
 
             ctx.put("message", c);
 
-            if (type == ActionType.DELAY) {
+            if (action instanceof Delay) {
                 try {
                     int delayTicks = Integer.parseInt(c);
                     int finalI = i;
                     Bukkit.getScheduler().runTaskLater(Treex.getInstance(), () ->
-                            executeSequential(ctx, actions, finalI), delayTicks);
+                            executeSequential(ctx, actions, finalI + 1), delayTicks);
                     return;
                 } catch (NumberFormatException e) {
-                    return;
+                    continue;
                 }
             } else {
-                type.getAction().execute(ctx);
+                action.execute(ctx);
             }
-
         }
     }
 }

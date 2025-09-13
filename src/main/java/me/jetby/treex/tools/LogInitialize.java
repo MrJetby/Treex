@@ -12,39 +12,43 @@ import java.util.concurrent.ConcurrentHashMap;
 @UtilityClass
 public class LogInitialize {
 
-    private static final Map<Class<?>, Logger> cache = new ConcurrentHashMap<>();
+    private static final Map<String, Logger> cache = new ConcurrentHashMap<>();
 
     public Logger getLogger(Class<?> clazz) {
-        return cache.computeIfAbsent(clazz, c -> {
-            Plugin plugin = JavaPlugin.getProvidingPlugin(c);
-            String name = plugin.getName();
+        Plugin plugin = JavaPlugin.getProvidingPlugin(clazz);
+        return getLogger(plugin);
+    }
 
-            return new Logger() {
-                @Override
-                public void msg(String message) {
-                    Bukkit.getConsoleSender().sendMessage("§6[" + name + "] §f" + message);
-                }
+    public Logger getLogger(Plugin plugin) {
+        return getLogger(plugin.getName());
+    }
 
-                @Override
-                public void warn(String message) {
-                    Bukkit.getConsoleSender().sendMessage("§e[" + name + "] §e" + message);
-                }
+    public Logger getLogger(String pluginName) {
+        return cache.computeIfAbsent(pluginName, name -> new Logger() {
+            @Override
+            public void msg(String message) {
+                Bukkit.getConsoleSender().sendMessage("§6[" + name + "] §f" + message);
+            }
 
-                @Override
-                public void info(String message) {
-                    Bukkit.getConsoleSender().sendMessage("§a[" + name + "] §f" + message);
-                }
+            @Override
+            public void warn(String message) {
+                Bukkit.getConsoleSender().sendMessage("§e[" + name + "] §e" + message);
+            }
 
-                @Override
-                public void success(String message) {
-                    Bukkit.getConsoleSender().sendMessage("§a[" + name + "] §a" + message);
-                }
+            @Override
+            public void info(String message) {
+                Bukkit.getConsoleSender().sendMessage("§a[" + name + "] §f" + message);
+            }
 
-                @Override
-                public void error(String message) {
-                    Bukkit.getConsoleSender().sendMessage("§c[" + name + "] §c" + message);
-                }
-            };
+            @Override
+            public void success(String message) {
+                Bukkit.getConsoleSender().sendMessage("§a[" + name + "] §a" + message);
+            }
+
+            @Override
+            public void error(String message) {
+                Bukkit.getConsoleSender().sendMessage("§c[" + name + "] §c" + message);
+            }
         });
     }
 }
