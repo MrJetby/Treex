@@ -1,5 +1,6 @@
-
-# API
+# TREEX
+Treex is a simple api for my plugins, it let you make any actions, rgb colors, or logger.
+## API
 ##### Maven
 ###### Repository
 ```xml
