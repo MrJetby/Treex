@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @UtilityClass
 public class LogInitialize {
 
-    private static final Map<String, Logger> cache = new ConcurrentHashMap<>();
+    private final Map<String, Logger> cache = new ConcurrentHashMap<>();
 
     public Logger getLogger(Class<?> clazz) {
         Plugin plugin = JavaPlugin.getProvidingPlugin(clazz);

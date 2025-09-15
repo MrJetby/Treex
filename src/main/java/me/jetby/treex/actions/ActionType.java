@@ -24,6 +24,7 @@ public enum ActionType {
     MSG_ALL(new BroadcastMessage()),
     BROADCASTSOUND(new BroadcastSound()),
     BROADCAST_SOUND(new BroadcastSound()),
+    SOUND_ALL(new BroadcastSound()),
     BROADCASTTITLE(new BroadcastTitle()),
     BROADCAST_TITLE(new BroadcastTitle()),
     BROADCASTACTIONBAR(new BroadcastActionBar()),
