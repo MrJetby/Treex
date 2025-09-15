@@ -6,7 +6,7 @@
 
   <groupId>me.jetby</groupId>
   <artifactId>Treex</artifactId>
-  <version>1.0</version>
+  <version>0.1</version>
   <packaging>jar</packaging>
 
   <name>Treex</name>
