@@ -1,13 +1,13 @@
 
 ##### Maven
-Repository
+###### Repository
 ```xml
 	<repository>
 	    <id>jitpack.io</id>
 	    <url>https://jitpack.io</url>
 	</repository>
 ```
-Dependency
+###### Dependency
 ```xml
 	<dependency>
 	    <groupId>com.github.MrJetby</groupId>
