@@ -1,4 +1,5 @@
 
+# API
 ##### Maven
 ###### Repository
 ```xml
@@ -16,3 +17,9 @@
 	</dependency>
 
 ```
+
+##### Example API usage
+```java
+String message = Colorize.text("&6Some message");
+```
+
