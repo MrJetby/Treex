@@ -1,6 +1,7 @@
 package me.jetby.treex.text;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Colorize {
     public List<String> list(List<String> list, boolean withoutChatColor) {
         List<String> strings = new ArrayList<>();
         for (String string : list) {
-            strings.add(text(string, true));
+            strings.add(text(string, withoutChatColor));
         }
         return strings;
     }
@@ -71,21 +72,10 @@ public class Colorize {
                             COLOR_CHAR + group.charAt(5));
         }
         message = matcher.appendTail(builder).toString();
-        return translateAlternateColorCodes('&', message);
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
-        final char[] b = textToTranslate.toCharArray();
 
-        for (int i = 0, length = b.length - 1; i < length; ++i) {
-            if (b[i] == altColorChar && isValidColorCharacter(b[i + 1])) {
-                b[i++] = COLOR_CHAR;
-                b[i] |= 0x20;
-            }
-        }
-
-        return new String(b);
-    }
 
 
     private String processGradients(String message) {
