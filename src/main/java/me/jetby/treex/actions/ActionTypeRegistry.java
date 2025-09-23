@@ -10,9 +10,8 @@ public class ActionTypeRegistry {
 
     private final Map<String, Action> CUSTOM_ACTIONS = new ConcurrentHashMap<>();
 
-    public void register(String name, Action action) {
-        CUSTOM_ACTIONS.put(name.toUpperCase(), action);
-    }
+    public void register(String name, Action action) {CUSTOM_ACTIONS.put(name.toUpperCase(), action);}
+    public void unregister(String name) {CUSTOM_ACTIONS.remove(name.toUpperCase());}
 
     public Action get(String name) {
         ActionType standard = ActionType.getType(name);
