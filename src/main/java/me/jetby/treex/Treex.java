@@ -12,7 +12,7 @@ public final class Treex extends JavaPlugin {
     public static Treex getInstance() {
         return INSTANCE;
     }
-    public static final Logger LOGGER = LogInitialize.getLogger("EvilMobs");
+    public static final Logger LOGGER = LogInitialize.getLogger("Treex");
 
     @Override
     public void onEnable() {

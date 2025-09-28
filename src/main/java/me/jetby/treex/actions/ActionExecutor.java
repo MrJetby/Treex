@@ -14,17 +14,17 @@ import java.util.List;
 public class ActionExecutor {
 
     public void execute(@NotNull ActionContext ctx,
-                        @NotNull List<ActionRegistry.ActionEntry> actions) {
+                        @NotNull List<ActionRegistry.RegistryActionEntry> actions) {
         executeSequential(ctx, actions, 0);
     }
 
     private void executeSequential(@NotNull ActionContext ctx,
-                                   List<ActionRegistry.ActionEntry> actions,
+                                   List<ActionRegistry.RegistryActionEntry> actions,
                                    int startIndex) {
 
         for (int i = startIndex; i < actions.size(); i++) {
 
-            ActionRegistry.ActionEntry entry = actions.get(i);
+            ActionRegistry.RegistryActionEntry entry = actions.get(i);
             Action action = entry.action();
             String c = Papi.setPapi(ctx.getPlayer(), Colorize.text(entry.context()));
 

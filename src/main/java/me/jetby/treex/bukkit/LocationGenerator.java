@@ -15,18 +15,18 @@ public class LocationGenerator {
     
     @Nullable
     public Location getRandomLocation(World world, int minRadius, int maxRadius) {
-        return getRandomLocation(world, minRadius, maxRadius, null, 0);
+        return getRandomLocation(world, minRadius, maxRadius, null, true, 0);
     }
     @Nullable
-    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials) {
-        return getRandomLocation(world, minRadius, maxRadius, materials, 0);
+    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials, boolean blacklist ) {
+        return getRandomLocation(world, minRadius, maxRadius, materials, blacklist, 0);
     }
     @Nullable
-    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials, int regionRadius) {
-        return getRandomLocation(world, minRadius, maxRadius, materials, regionRadius, 15);
+    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials, boolean blacklist, int regionRadius) {
+        return getRandomLocation(world, minRadius, maxRadius, materials, blacklist, regionRadius, 15);
     }
     @Nullable
-    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials, int regionRadius, int attempts) {
+    public Location getRandomLocation(World world, int minRadius, int maxRadius, @Nullable Set<Material> materials, boolean blacklist, int regionRadius, int attempts) {
 
         if (world == null) {
             return null;
@@ -53,7 +53,11 @@ public class LocationGenerator {
 
             Material blockType = world.getBlockAt(x, y, z).getType();
 
-            if (materials != null && materials.contains(blockType)) continue;
+            if (blacklist) {
+                if (materials != null && materials.contains(blockType)) continue;
+            } else {
+                if (materials != null && !materials.contains(blockType)) continue;
+            }
 
             Location location = new Location(world, x + 0.5, y + 1, z + 0.5);
 

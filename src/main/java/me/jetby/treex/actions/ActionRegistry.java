@@ -13,8 +13,8 @@ public class ActionRegistry {
     private final Pattern ACTION_PATTERN = Pattern.compile("\\[(\\S+)] ?(.*)");
     private static final Logger logger = LogInitialize.getLogger(Treex.class);
 
-    public List<ActionEntry> transform(List<String> settings) {
-        List<ActionEntry> actions = new ArrayList<>();
+    public List<RegistryActionEntry> transform(List<String> settings) {
+        List<RegistryActionEntry> actions = new ArrayList<>();
         for (String s : settings) {
             var matcher = ACTION_PATTERN.matcher(s);
             if (!matcher.matches()) {
@@ -37,10 +37,10 @@ public class ActionRegistry {
             }
 
             var context = matcher.group(2).trim();
-            actions.add(new ActionEntry(action, context));
+            actions.add(new RegistryActionEntry(action, context));
         }
         return actions;
     }
 
-    public record ActionEntry(Action action, String context) {}
+    public record RegistryActionEntry(Action action, String context) {}
 }
