@@ -2,6 +2,7 @@ package me.jetby.treex.text;
 
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.jetby.treex.Treex;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -12,11 +13,13 @@ public class Papi {
 
     public String setPapi(OfflinePlayer player, String text) {
         if (text == null) return null;
+        if (!Treex.getInstance().isPlaceholderApiHooked()) return text;
         return PlaceholderAPI.setPlaceholders(player, text);
     }
 
     public List<String> setPapi(OfflinePlayer player, List<String> text) {
         if (text == null) return null;
+        if (!Treex.getInstance().isPlaceholderApiHooked()) return text;
         return PlaceholderAPI.setPlaceholders(player, text);
     }
 }
