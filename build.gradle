@@ -1,0 +1,115 @@
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'me.jetby'
+version = '0.1.5'
+
+def envFile = rootProject.file('.env')
+def envProps = new Properties()
+
+if (envFile.exists()) {
+    envFile.eachLine { line ->
+        def trimmed = line.trim()
+        if (trimmed && !trimmed.startsWith('#') && line.contains('=')) {
+            def (key, value) = line.split('=', 2)
+            envProps.setProperty(key.trim(), value.trim())
+        }
+    }
+    println "✅ .env загружен (${envProps.size()} переменных)"
+} else {
+    println('⚠️  Файл .env не найден — используются пустые значения.')
+}
+
+repositories {
+    mavenCentral()
+    maven { name = "papermc-repo"; url = "https://repo.papermc.io/repository/maven-public/" }
+    maven { name = "placeholderapi"; url = "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+    maven { name = "sk89q-repo"; url = "https://maven.enginehub.org/repo/" }
+}
+
+dependencies {
+    implementation("net.kyori:adventure-api:4.25.0")
+    implementation("net.kyori:adventure-text-minimessage:4.25.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.4.1")
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.6'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.15'
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    compileOnly 'org.jetbrains:annotations:26.0.2'
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    relocate("net.kyori.adventure", "me.jetby.libs.adventure")
+}
+
+tasks.build {
+    dependsOn tasks.shadowJar
+}
+
+tasks.register('sourcesJar', Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "space.jetby.libs"
+            artifactId = "Treex"
+            version = "0.1.5"
+
+            artifact tasks.shadowJar
+            artifact tasks.sourcesJar
+        }
+    }
+
+    repositories {
+        maven {
+            name = "vds"
+            url = uri("sftp://maven.jetby.space:22/var/www/maven")
+            credentials {
+                username = envProps.getProperty("JETBY_VDS_USER", "")
+                password = envProps.getProperty("JETBY_VDS_PASS", "")
+            }
+        }
+    }
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.runServer {
+    minecraftVersion("1.16")
+}

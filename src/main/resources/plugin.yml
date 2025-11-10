@@ -1,0 +1,10 @@
+name: Treex
+version: '0.1.5'
+main: me.jetby.treex.Treex
+api-version: '1.16'
+softdepend:
+  - WorldGuard
+  - WorldEdit
+  - PlaceholderAPI
+commands:
+  treex: {}
