@@ -1,4 +1,4 @@
-package me.jetby.treex.gui.itemwrapper;
+package me.jetby.treex.guiwrapper.itemwrapper;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ModernWrapper {
+public class ModernWrapper implements ItemWrapper {
 
 
     private int slot;

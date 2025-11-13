@@ -1,6 +1,8 @@
-package me.jetby.treex.gui;
+package me.jetby.treex.guiwrapper;
 
-import me.jetby.treex.gui.itemwrapper.LegacyWrapper;
+import me.jetby.treex.guiwrapper.itemwrapper.ItemWrapper;
+import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
+import me.jetby.treex.guiwrapper.itemwrapper.ModernWrapper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,14 +20,20 @@ public class GuiListener implements Listener {
         int slot = e.getRawSlot();
         if (slot < 0 || slot >= e.getInventory().getSize()) return;
 
-        LegacyWrapper wrapper = gui.getItems().get(slot);
-        if (wrapper != null && wrapper.onClick() != null) {
-            wrapper.onClick().accept(e);
+        ItemWrapper itemWrapper = gui.getItems().get(slot);
+        if (itemWrapper instanceof LegacyWrapper wrapper) {
+            if (wrapper.onClick() != null) {
+                wrapper.onClick().accept(e);
+            }
+        } else if (itemWrapper instanceof ModernWrapper wrapper) {
+            if (wrapper.onClick() != null) {
+                wrapper.onClick().accept(e);
+            }
         }
     }
 
     @Nullable
-    public static XGui getHolder(Inventory inventory) {
+    private XGui getHolder(Inventory inventory) {
         if (inventory == null) return null;
 
         InventoryHolder holder = inventory.getHolder();

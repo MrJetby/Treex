@@ -1,4 +1,4 @@
-package me.jetby.treex.gui.itemwrapper;
+package me.jetby.treex.guiwrapper.itemwrapper;
 
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class LegacyWrapper {
+public class LegacyWrapper implements ItemWrapper {
 
     private int slot;
     private ItemStack itemStack;

@@ -3,18 +3,18 @@ package me.jetby.treex.text;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @UtilityClass
-public class MM {
-
-    private final MiniMessage MINI = MiniMessage.miniMessage();
-
+public class MiniMessageAmpersandSupport {
     public List<Component> component(List<String> input) {
         List<Component> list = new ArrayList<>();
+        if (input == null || input.isEmpty()) return list;
         for (String string : input) {
             list.add(component(string));
         }
@@ -24,13 +24,17 @@ public class MM {
     public Component component(String input) {
         if (input == null || input.isEmpty()) return Component.empty();
 
-        String parsed = toMiniCompatible(input);
-
-
-        return MINI.deserialize(parsed);
+        String parsed = "<!i>"+toMiniCompatible(input);
+        return MiniMessage.miniMessage().deserialize(
+                parsed
+        );
     }
 
-    private static String toMiniCompatible(String input) {
+    public void setLore(@NotNull ItemMeta itemMeta, List<String> lore) {
+        itemMeta.lore(component(lore));
+    }
+    private String toMiniCompatible(String input) {
+        input = input.replaceAll("&#([0-9a-fA-F]{6})", "<#$1>");
         return input
                 .replace("&0", "<black>")
                 .replace("&1", "<dark_blue>")

@@ -61,7 +61,7 @@ public class Md5Button {
     }
 
     private HoverEvent.Action getHoverAction(String type) {
-        return switch (type) {
+        return switch (type.toLowerCase()) {
             case "show_text" -> HoverEvent.Action.SHOW_TEXT;
             case "show_item" -> HoverEvent.Action.SHOW_ITEM;
             case "show_entity" -> HoverEvent.Action.SHOW_ENTITY;
@@ -70,7 +70,7 @@ public class Md5Button {
     }
 
     private ClickEvent.Action getClickAction(String type) {
-        return switch (type) {
+        return switch (type.toLowerCase()) {
             case "run_command" -> ClickEvent.Action.RUN_COMMAND;
             case "suggest_command" -> ClickEvent.Action.SUGGEST_COMMAND;
             case "open_url" -> ClickEvent.Action.OPEN_URL;
