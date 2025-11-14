@@ -13,7 +13,6 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemFlag;
@@ -24,7 +23,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,13 +37,22 @@ public class GuiForm {
     @Getter
     private Menu menu;
 
+
+    public void loadGui(FileConfiguration config,
+                                  @Nullable Consumer<GuiBuilder> guiBuilderConsumer,
+                                  @Nullable Consumer<ButtonBuilder> buttonBuilderConsumer) {
+        menuLoad(config, guiBuilderConsumer);
+        buttonLoad(config, buttonBuilderConsumer);
+        LOGGER.success("loaded");
+    }
+
     public GuiBuilder menuLoad(@NotNull FileConfiguration configuration,
                                @Nullable Consumer<GuiBuilder> builderConsumer) {
 
         try {
             String menuId = configuration.getString("id");
             String title = configuration.getString("title");
-            int size = configuration.getInt("size", 3);
+            int size = configuration.getInt("size", 6);
             if (size < 9) {
                 if (size <= 6 && size>0) {
                     size = size * 9;

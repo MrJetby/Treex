@@ -2,10 +2,10 @@ package me.jetby.treex;
 
 import lombok.Getter;
 import me.jetby.treex.events.TreexOnPluginDisable;
-import me.jetby.treex.gui.Button;
 import me.jetby.treex.guiwrapper.GuiForm;
 import me.jetby.treex.guiwrapper.GuiListener;
 import me.jetby.treex.guiwrapper.test.ExampleGui;
+import me.jetby.treex.guiwrapper.test.GuiCreator;
 import me.jetby.treex.text.ServerVersion;
 import me.jetby.treex.tools.LogInitialize;
 import me.jetby.treex.tools.log.Logger;
@@ -17,8 +17,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 
 @Getter
@@ -58,7 +56,7 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
         String[] parts = version.split("_");
         if (parts.length >= 2) {
             int minorVersion = Integer.parseInt(parts[1]);
-            if (minorVersion>=18) {
+            if (minorVersion >= 18) {
                 itemWrapperByServer = "MODERN";
             } else {
                 itemWrapperByServer = "LEGACY";
@@ -66,14 +64,24 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
             }
         }
 
-        GuiForm form = new GuiForm();
-        GuiForm.ButtonBuilder button = form.buttonLoad(getConfig(), b -> {
-            b.set("category", b.config().getString("category"));
-        });
+        form = new GuiForm();
+        form.loadGui(getConfig(),
+                gui -> {
+                    gui.set("test", getConfig().getString("test"));
+                    LOGGER.success((String) gui.get("test"));
+                },
+                button -> {
+                    button.set("category", button.config().getString("category"));
+                }
+        );
+
+
 
         this.getCommand("treex").setExecutor(this);
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
     }
+
+    GuiForm form;
 
     @Override
     public void onDisable() {
@@ -88,7 +96,7 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
-            new ExampleGui()
+            new GuiCreator(form)
                     .open(player);
         }
         return true;

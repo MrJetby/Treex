@@ -30,9 +30,6 @@ public class MiniMessageAmpersandSupport {
         );
     }
 
-    public void setLore(@NotNull ItemMeta itemMeta, List<String> lore) {
-        itemMeta.lore(component(lore));
-    }
     private String toMiniCompatible(String input) {
         input = input.replaceAll("&#([0-9a-fA-F]{6})", "<#$1>");
         return input

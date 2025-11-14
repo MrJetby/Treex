@@ -97,6 +97,7 @@ public class LegacyWrapper implements ItemWrapper {
     }
 
     public static class Builder {
+        private int slot;
         private ItemStack itemStack;
         private Material material;
         private String displayName;
@@ -140,9 +141,14 @@ public class LegacyWrapper implements ItemWrapper {
             this.enchanted = enchanted;
             return this;
         }
+        public LegacyWrapper.Builder slot(int slot) {
+            this.slot = slot;
+            return this;
+        }
         public LegacyWrapper build() {
             LegacyWrapper wrapper = new LegacyWrapper(itemStack);
 
+            wrapper.slot = slot;
             wrapper.displayName = displayName;
             wrapper.lore = lore;
             wrapper.customModelData = customModelData;
