@@ -1,5 +1,6 @@
-package me.jetby.treex.guiwrapper.itemwrapper;
+package me.jetby.treex.guiwrapper.item.wrappers;
 
+import me.jetby.treex.guiwrapper.item.ItemWrapper;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;

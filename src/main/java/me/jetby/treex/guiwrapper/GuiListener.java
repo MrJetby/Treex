@@ -1,8 +1,8 @@
 package me.jetby.treex.guiwrapper;
 
-import me.jetby.treex.guiwrapper.itemwrapper.ItemWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.ModernWrapper;
+import me.jetby.treex.guiwrapper.item.ItemWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.LegacyWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.ModernWrapper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;

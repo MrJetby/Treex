@@ -4,8 +4,8 @@ import lombok.Getter;
 import me.jetby.treex.events.TreexOnPluginDisable;
 import me.jetby.treex.guiwrapper.GuiForm;
 import me.jetby.treex.guiwrapper.GuiListener;
+import me.jetby.treex.guiwrapper.item.ItemWrapper;
 import me.jetby.treex.guiwrapper.test.ExampleGui;
-import me.jetby.treex.guiwrapper.test.FormedGui;
 import me.jetby.treex.text.ServerVersion;
 import me.jetby.treex.tools.LogInitialize;
 import me.jetby.treex.tools.log.Logger;
@@ -75,11 +75,13 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
                 }
         );
 
-
-
         this.getCommand("treex").setExecutor(this);
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
     }
+
+
+    public ItemWrapper get
+
 
     GuiForm form;
 

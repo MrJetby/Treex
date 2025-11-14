@@ -1,10 +1,12 @@
 package me.jetby.treex.guiwrapper;
 
-import me.jetby.treex.guiwrapper.itemwrapper.ItemWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.ModernWrapper;
+import me.jetby.treex.guiwrapper.item.ItemWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.LegacyWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.ModernWrapper;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +14,38 @@ import java.util.List;
 public abstract class PaginatedXGui extends XGui {
 
     private final List<ItemWrapper> content = new ArrayList<>();
-    private final int[] allowedSlots;
+    private int[] allowedSlots;
     private int currentPage = 0;
 
     public PaginatedXGui(@NotNull String title, int... allowedSlots) {
         super(title);
         this.allowedSlots = allowedSlots;
     }
+    public PaginatedXGui(@Nullable GuiForm form) {
+        super(form);
+    }
+    public PaginatedXGui(@NotNull String title, InventoryType inventoryType) {
+        super(title, inventoryType);
+    }
+    public PaginatedXGui(@NotNull String title) {
+        super(title);
+    }
 
     public void addItemToContent(ItemWrapper wrapper) {
         content.add(wrapper);
     }
 
+    public void setAllowedSlots(int... slots) {
+        this.allowedSlots = slots;
+    }
     private void clearContentSlots() {
         for (int slot : allowedSlots) {
             unregisterItem(slot);
         }
     }
 
-    public void applyPage() {
+    public void openPage(int page) {
+        currentPage = page;
         clearContentSlots();
 
         int perPage = allowedSlots.length;
@@ -63,20 +78,20 @@ public abstract class PaginatedXGui extends XGui {
 
         if ((currentPage + 1) * perPage < content.size()) {
             currentPage++;
-            applyPage();
+            openPage(currentPage);
         }
     }
 
     public void prevPage() {
         if (currentPage > 0) {
             currentPage--;
-            applyPage();
+            openPage(currentPage);
         }
     }
 
     @Override
     public void open(@NotNull Player player) {
         super.open(player);
-        applyPage();
+        openPage(0);
     }
 }

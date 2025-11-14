@@ -7,7 +7,7 @@ import me.jetby.treex.gui.requirements.Requirements;
 import me.jetby.treex.gui.requirements.ViewRequirement;
 import me.jetby.treex.guiwrapper.GuiForm;
 import me.jetby.treex.guiwrapper.XGui;
-import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.LegacyWrapper;
 import me.jetby.treex.text.Colorize;
 import me.jetby.treex.actions.ActionContext;
 import me.jetby.treex.actions.ActionExecutor;

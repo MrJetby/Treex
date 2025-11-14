@@ -1,10 +1,9 @@
 package me.jetby.treex.guiwrapper;
 
 import lombok.Getter;
-import me.jetby.treex.guiwrapper.itemwrapper.ItemWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
-import me.jetby.treex.guiwrapper.itemwrapper.ModernWrapper;
-import me.jetby.treex.text.Colorize;
+import me.jetby.treex.guiwrapper.item.ItemWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.LegacyWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.ModernWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -26,9 +25,27 @@ import java.util.function.Consumer;
 
 public abstract class XGui implements InventoryHolder {
 
-    protected Inventory inventory;
+    @Getter
+    private Inventory inventory;
     @Getter
     private final Map<Integer, ItemWrapper> items = new HashMap<>();
+
+    private Consumer<InventoryDragEvent> onDrag;
+    private Consumer<InventoryOpenEvent> onOpen;
+    private Consumer<InventoryCloseEvent> onClose;
+    public Consumer<InventoryDragEvent> onDrag() {return onDrag;}
+    public Consumer<InventoryOpenEvent> onOpen() {return onOpen;}
+    public Consumer<InventoryCloseEvent> onClose() {return onClose;}
+    public void onDrag(Consumer<InventoryDragEvent> event) {}
+    public void onOpen(Consumer<InventoryOpenEvent> event) {}
+    public void onClose(Consumer<InventoryCloseEvent> event) {}
+
+    public Player player;
+
+    public void open(@NotNull Player player) {
+        this.player = player;
+        player.openInventory(inventory);
+    }
 
     public XGui(@Nullable GuiForm form) {
         if (form.getMenu()==null) return;
@@ -43,24 +60,6 @@ public abstract class XGui implements InventoryHolder {
     public XGui(@NotNull String title, InventoryType inventoryType) {
         this.inventory = Bukkit.createInventory(this, inventoryType, title);
     }
-
-    private Consumer<InventoryDragEvent> onDrag;
-    public Consumer<InventoryDragEvent> onDrag() {return onDrag;}
-    public void onDrag(Consumer<InventoryDragEvent> event) {}
-
-    private Consumer<InventoryOpenEvent> onOpen;
-    public Consumer<InventoryOpenEvent> onOpen() {return onOpen;}
-    public void onOpen(Consumer<InventoryOpenEvent> event) {}
-
-    private Consumer<InventoryCloseEvent> onClose;
-    public Consumer<InventoryCloseEvent> onClose() {return onClose;}
-    public void onClose(Consumer<InventoryCloseEvent> event) {}
-
-    @Override
-    public @NotNull Inventory getInventory() {
-        return inventory;
-    }
-
     public ItemWrapper getWrapper(int slot) {
         return items.get(slot);
     }
@@ -135,23 +134,5 @@ public abstract class XGui implements InventoryHolder {
         }
         inventory.setItem(wrapper.slot(), itemStack);
         items.put(wrapper.slot(), wrapper);
-    }
-
-    private int currentPage = 0;
-    public void openPage(int page) {
-        currentPage = page;
-    }
-    public void nextPage() {
-
-    }
-    public void prevPage() {
-
-    }
-
-    public Player player;
-
-    public void open(@NotNull Player player) {
-        this.player = player;
-        player.openInventory(inventory);
     }
 }

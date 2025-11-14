@@ -1,7 +1,7 @@
 package me.jetby.treex.guiwrapper.test;
 
 import me.jetby.treex.guiwrapper.PaginatedXGui;
-import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
+import me.jetby.treex.guiwrapper.item.wrappers.LegacyWrapper;
 import org.bukkit.Material;
 
 public class ExampleGui extends PaginatedXGui {
@@ -21,7 +21,7 @@ public class ExampleGui extends PaginatedXGui {
             );
         }
 
-        applyPage();
+        openPage(0);
     }
 
 
