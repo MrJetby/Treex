@@ -80,7 +80,6 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
     }
 
 
-    public ItemWrapper get
 
 
     GuiForm form;
