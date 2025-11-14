@@ -8,6 +8,9 @@ import me.jetby.treex.text.Colorize;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -19,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class XGui implements InventoryHolder {
 
@@ -39,6 +43,18 @@ public abstract class XGui implements InventoryHolder {
     public XGui(@NotNull String title, InventoryType inventoryType) {
         this.inventory = Bukkit.createInventory(this, inventoryType, title);
     }
+
+    private Consumer<InventoryDragEvent> onDrag;
+    public Consumer<InventoryDragEvent> onDrag() {return onDrag;}
+    public void onDrag(Consumer<InventoryDragEvent> event) {}
+
+    private Consumer<InventoryOpenEvent> onOpen;
+    public Consumer<InventoryOpenEvent> onOpen() {return onOpen;}
+    public void onOpen(Consumer<InventoryOpenEvent> event) {}
+
+    private Consumer<InventoryCloseEvent> onClose;
+    public Consumer<InventoryCloseEvent> onClose() {return onClose;}
+    public void onClose(Consumer<InventoryCloseEvent> event) {}
 
     @Override
     public @NotNull Inventory getInventory() {

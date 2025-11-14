@@ -1,35 +1,51 @@
 package me.jetby.treex.guiwrapper.test;
 
-import me.jetby.treex.guiwrapper.XGui;
+import me.jetby.treex.guiwrapper.PaginatedXGui;
 import me.jetby.treex.guiwrapper.itemwrapper.LegacyWrapper;
 import org.bukkit.Material;
 
-public class ExampleGui extends XGui {
-
-
-    private int current = 0;
+public class ExampleGui extends PaginatedXGui {
 
     public ExampleGui() {
-        super("");
+        super("123", 3, 5);
 
-        registerItem(LegacyWrapper.builder(Material.LIME_DYE).build());
+        for (int i = 0; i < 30; i++) {
+            int index = i;
+            addItemToContent(LegacyWrapper.builder(Material.PAPER)
+                    .displayName("Элемент #" + index)
+                    .onClick(e -> {
+                        e.setCancelled(true);
+                        player.sendMessage("Нажал на " + index);
+                    })
+                    .build()
+            );
+        }
 
-        updateItem();
+        applyPage();
     }
 
 
-    private void updateItem() {
-        LegacyWrapper wrapper = LegacyWrapper.builder(Material.LIME_DYE)
-                .slot(1)
-                .displayName("---" + current + "---")
-                .enchanted(true)
-                .onClick(event -> {
-                    event.setCancelled(true);
-                    current++;
-                    updateItem();
-                })
-                .build();
-
-        registerItem(wrapper);
+    @Override
+    protected void everyPageLogic() {
+        registerItem(
+                LegacyWrapper.builder(Material.ARROW)
+                        .slot(13)
+                        .displayName("§e← Назад")
+                        .onClick(e -> {
+                            e.setCancelled(true);
+                            prevPage();
+                        })
+                        .build()
+        );
+        registerItem(
+                LegacyWrapper.builder(Material.ARROW)
+                        .slot(15)
+                        .displayName("§eВперёд →")
+                        .onClick(e -> {
+                            e.setCancelled(true);
+                            nextPage();
+                        })
+                        .build()
+        );
     }
 }

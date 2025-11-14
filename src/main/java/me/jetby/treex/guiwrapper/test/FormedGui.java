@@ -19,11 +19,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class GuiCreator extends XGui {
+public class FormedGui extends XGui {
 
     private final List<Integer> freeSlots = new ArrayList<>();
 
-    public GuiCreator(@NotNull GuiForm form) {
+    public FormedGui(@NotNull GuiForm form) {
         super(form);
         registerButtons(form);
     }

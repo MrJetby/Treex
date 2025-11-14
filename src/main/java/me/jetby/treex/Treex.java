@@ -5,7 +5,7 @@ import me.jetby.treex.events.TreexOnPluginDisable;
 import me.jetby.treex.guiwrapper.GuiForm;
 import me.jetby.treex.guiwrapper.GuiListener;
 import me.jetby.treex.guiwrapper.test.ExampleGui;
-import me.jetby.treex.guiwrapper.test.GuiCreator;
+import me.jetby.treex.guiwrapper.test.FormedGui;
 import me.jetby.treex.text.ServerVersion;
 import me.jetby.treex.tools.LogInitialize;
 import me.jetby.treex.tools.log.Logger;
@@ -96,7 +96,7 @@ public final class Treex extends JavaPlugin implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
-            new GuiCreator(form)
+            new ExampleGui()
                     .open(player);
         }
         return true;

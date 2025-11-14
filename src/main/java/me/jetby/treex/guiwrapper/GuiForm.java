@@ -126,6 +126,7 @@ public class GuiForm {
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta != null) {
                         if (hideAttributes) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                        if (hideEnchantments) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         meta.addItemFlags(ItemFlag.HIDE_DYE);
                         meta.setDisplayName(displayName);
                         meta.setLore(lore);
@@ -143,7 +144,7 @@ public class GuiForm {
                         buttons.add(new Button(key, slot, displayName,
                                 lore, priority, amount, customModelData,
                                 enchanted, freeSlot, hideAttributes, hideEnchantments,
-                                itemStack, parseViewRequirements(itemSection, slot),
+                                itemStack, parseViewRequirements(itemSection),
                                 parseClickCommands(itemSection),
                                 type,
                                 customValues
@@ -184,7 +185,7 @@ public class GuiForm {
         return buttonCommands;
     }
 
-    private List<ViewRequirement> parseViewRequirements(ConfigurationSection itemSection, int slot) {
+    private List<ViewRequirement> parseViewRequirements(ConfigurationSection itemSection) {
         List<ViewRequirement> requirements = new ArrayList<>();
         ConfigurationSection requirementsSection = itemSection.getConfigurationSection("view_requirements");
         if (requirementsSection == null) {
