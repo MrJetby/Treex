@@ -7,7 +7,9 @@ import org.bukkit.Material;
 public class ExampleGui extends PaginatedXGui {
 
     public ExampleGui() {
-        super("123", 3, 5);
+        super("123", 45);
+
+        setAllowedSlots(3, 5);
 
         for (int i = 0; i < 30; i++) {
             int index = i;

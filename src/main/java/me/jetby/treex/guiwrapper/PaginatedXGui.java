@@ -21,6 +21,9 @@ public abstract class PaginatedXGui extends XGui {
         super(title);
         this.allowedSlots = allowedSlots;
     }
+    public PaginatedXGui(@NotNull String title, int size) {
+        super(title, size);
+    }
     public PaginatedXGui(@Nullable GuiForm form) {
         super(form);
     }

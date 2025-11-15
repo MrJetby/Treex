@@ -57,6 +57,9 @@ public abstract class XGui implements InventoryHolder {
     public XGui(@NotNull String title) {
         this.inventory = Bukkit.createInventory(this, InventoryType.CHEST, title);
     }
+    public XGui(@NotNull String title, int size) {
+        this.inventory = Bukkit.createInventory(this, size, title);
+    }
     public XGui(@NotNull String title, InventoryType inventoryType) {
         this.inventory = Bukkit.createInventory(this, inventoryType, title);
     }
